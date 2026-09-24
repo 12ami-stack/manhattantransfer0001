@@ -19,7 +19,7 @@ html
         <div id="uiOverlay">SCORE: <span id="scoreVal">0</span> | HP: <span id="hpVal">100</span>%</div>
         <div id="statusMessage">GAME OVER<br><span style="font-size:20px; color:#fff;">Enterキーで再挑戦</span></div>
     </div>
-    <div class="instructions">👉 <strong>操作:</strong> 【矢印キー】狙撃衛星を移動 | 【Enterキー長押し】顔出し(エイム) | 【顔出し中にSpaceキー】狙撃発射</div>
+    <div class="instructions">👉 <strong>操作:</strong> 【矢印キー】狙撃衛星を移動 | 【Enterキー長押し】顔出し(エイム) | 【顔出し中にSpaceキー】狙撃発射（衛星に当たると跳弾！）</div>
 <script>
 const canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d'), scoreVal = document.getElementById('scoreVal'), hpVal = document.getElementById('hpVal'), statusMessage = document.getElementById('statusMessage');
 let score = 0, hp = 100, gameOver = false, playerBullets = [], enemyBullets = [], enemies = [], particles = [];
@@ -53,7 +53,7 @@ function update() {
         if (!b.transferred && satellite.active && Math.hypot(b.x - satellite.x, b.y - satellite.y) < satellite.radius + 5) {
             b.transferred = true;
             if (enemies.length > 0) {
-                let tgt = enemies, minDist = Math.hypot(enemies.x - satellite.x, enemies.y - satellite.y);
+                let tgt = enemies[0], minDist = Math.hypot(enemies[0].x - satellite.x, enemies[0].y - satellite.y);
                 enemies.forEach(e => { let d = Math.hypot(e.x - satellite.x, e.y - satellite.y); if(d < minDist) { minDist = d; tgt = e; } });
                 const a = Math.atan2(tgt.y - satellite.y, tgt.x - satellite.x); b.vx = Math.cos(a)*15; b.vy = Math.sin(a)*15; b.x = satellite.x; b.y = satellite.y; createParticles(satellite.x, satellite.y, '#00ffcc', 15);
             }
@@ -96,5 +96,3 @@ loop();
 </script>
 </body>
 </html>
-
-コードは注意してご使用ください。
